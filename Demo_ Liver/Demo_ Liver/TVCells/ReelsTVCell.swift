@@ -270,7 +270,7 @@ class ReelsTVCell: UITableViewCell {
                     self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
                 }
                 else {
-                    self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
+                    self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 7.0)
                 }
                 print("Key Board Show")
             }
