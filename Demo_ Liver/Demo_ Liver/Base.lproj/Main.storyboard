@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="Demo__Liver" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybo-Uu-nSU">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="T16-gF-E7q">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="T16-gF-E7q" secondAttribute="trailing" id="013-DB-GiR"/>
+                                    <constraint firstItem="T16-gF-E7q" firstAttribute="leading" secondItem="ybo-Uu-nSU" secondAttribute="leading" id="NU4-Pj-IoA"/>
+                                    <constraint firstItem="T16-gF-E7q" firstAttribute="top" secondItem="ybo-Uu-nSU" secondAttribute="top" id="Zqj-dm-2gN"/>
+                                    <constraint firstAttribute="bottom" secondItem="T16-gF-E7q" secondAttribute="bottom" id="hLz-PA-Ysb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ybo-Uu-nSU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="J6p-6v-oxg"/>
+                            <constraint firstItem="ybo-Uu-nSU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lRB-Sg-cmn"/>
+                            <constraint firstItem="ybo-Uu-nSU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oIm-1n-WqN"/>
+                            <constraint firstAttribute="bottom" secondItem="ybo-Uu-nSU" secondAttribute="bottom" id="vQD-9z-C99"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tblReels" destination="T16-gF-E7q" id="fKW-Ye-opi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="46.564885496183201" y="-2.1126760563380285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
