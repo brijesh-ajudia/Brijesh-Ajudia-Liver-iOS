@@ -28,6 +28,11 @@ class ViewController: BaseViewController {
         
         self.setUpTableData()
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleVideoFinished),
+                                               name: NSNotification.Name("VideoFinished"),
+                                               object: nil)
+        
     }
     
     
@@ -140,7 +145,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.imgUser.loadImageFromProfile(urlString: videoObj.profilePicURL ?? "")
         
-        cell.lblUserName.text = videoObj.username ?? ""
+        cell.lblUserName.text = videoObj.username?.capitalized ?? ""
         cell.lblUserName.font = AppFont.font(type: .SF_Medium, size: 10.0)
         
         cell.lblLikesCount.text = "\(videoObj.likes ?? 0)"
@@ -148,7 +153,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.btnFollow.titleLabel?.font = AppFont.font(type: .SF_Medium, size: 12.0)
         
-        cell.lblTag.text = videoObj.topic ?? ""
+        cell.lblTag.text = videoObj.topic?.capitalized ?? ""
         cell.lblTag.font = AppFont.font(type: .SF_Regular, size: 10.0)
         
         cell.lblViewersCount.text = "\(videoObj.viewers ?? 0)"
@@ -196,6 +201,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return screenHeight()
     }
     
+    @objc private func handleVideoFinished() {
+        guard let visibleIndexPaths = self.tblReels.indexPathsForVisibleRows,
+              let currentIndexPath = visibleIndexPaths.first else { return }
+        
+        let nextRow = (currentIndexPath.row + 1) % self.allVideos.count
+        let nextIndexPath = IndexPath(row: nextRow, section: 0)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            self.tblReels.scrollToRow(at: nextIndexPath, at: .top, animated: true)
+        }
+    }
+    
     
 }
 
@@ -206,6 +223,10 @@ extension ViewController {
         print("TF ---> ", textField.text ?? "")
         
         let comment = textField.text ?? ""
+        if comment == "" {
+            self.view.resignFirstResponder()
+            return
+        }
         let tag = textField.tag
         let videoObj = self.allVideos[tag]
         

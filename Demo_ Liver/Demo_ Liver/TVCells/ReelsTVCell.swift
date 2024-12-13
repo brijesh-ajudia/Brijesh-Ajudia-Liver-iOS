@@ -33,6 +33,9 @@ class ReelsTVCell: UITableViewCell {
     
     @IBOutlet weak var txtComment: UITextField!
     
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomTFConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     //var allComments: [Comments] = []
@@ -56,6 +59,15 @@ class ReelsTVCell: UITableViewCell {
         tap.numberOfTapsRequired = 2
         tap.delegate = self
         self.contentView.addGestureRecognizer(tap)
+        
+        if DeviceUtility.deviceHasTopNotch == true {
+            self.topConstraint.constant = sceneDelegate?.window?.safeAreaInsets.top ?? 20
+            self.bottomTFConstraint.constant = sceneDelegate?.window?.safeAreaInsets.bottom ?? 20
+        }
+        else {
+            self.topConstraint.constant = 20
+            self.bottomTFConstraint.constant = 20
+        }
         
         self.applyTopGradient()
         self.applyBottomGradient()
@@ -99,6 +111,15 @@ class ReelsTVCell: UITableViewCell {
         if let playerLayer = playerLayer {
             self.viewReelVideo.layer.addSublayer(playerLayer)
         }
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(videoDidFinishPlaying),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: player?.currentItem)
+    }
+    
+    @objc private func videoDidFinishPlaying() {
+        NotificationCenter.default.post(name: NSNotification.Name("VideoFinished"), object: nil)
     }
     
     func playVideo() {
@@ -234,37 +255,26 @@ class ReelsTVCell: UITableViewCell {
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             let endFrameY = endFrame?.origin.y ?? 0
-            if #available(iOS 14, *) {
-                if endFrameY >= UIScreen.main.bounds.size.height {
-                    // Hide
-                    if DeviceUtility.deviceHasTopNotch == true {
-                        self.bottomConstraint.constant = 0.0
-                    }
-                    else {
-                        self.bottomConstraint.constant = 0.0
-                    }
-                    print("Key Board Hide")
-                } else {
-                    // Show
-                    if DeviceUtility.deviceHasTopNotch == true {
-                        self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
-                    }
-                    else {
-                        self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
-                    }
-                    print("Key Board Show")
-                }
-            } else {
-                if endFrameY >= UIScreen.main.bounds.size.height {
-                    // Hide
+            if endFrameY >= UIScreen.main.bounds.size.height {
+                // Hide
+                if DeviceUtility.deviceHasTopNotch == true {
                     self.bottomConstraint.constant = 0.0
-                    print("Key Board Hide")
-                } else {
-                    // Show
-                    self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
-                    print("Key Board Show")
                 }
+                else {
+                    self.bottomConstraint.constant = 0.0
+                }
+                print("Key Board Hide")
+            } else {
+                // Show
+                if DeviceUtility.deviceHasTopNotch == true {
+                    self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
+                }
+                else {
+                    self.bottomConstraint.constant = ((endFrame?.size.height ?? 0.0) - 21.0)
+                }
+                print("Key Board Show")
             }
+            
             let i = notification.userInfo!
             let s: TimeInterval = (i[UIResponder.keyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
             UIView.animate(withDuration: s) { self.contentView.layoutIfNeeded() }
@@ -272,7 +282,6 @@ class ReelsTVCell: UITableViewCell {
     }
     
     override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-            // If the tap is inside the text field, ignore it
         if let touchedView = touch.view, touchedView.isDescendant(of: self.txtComment) {
             return false
         }
@@ -294,7 +303,7 @@ extension ReelsTVCell: UITableViewDataSource, UITableViewDelegate {
         
         cell.imgUser.loadImageFromProfile(urlString: commentObj.picURL ?? "")
         
-        cell.lblUsername.text = commentObj.username ?? ""
+        cell.lblUsername.text = commentObj.username?.capitalized ?? ""
         cell.lblUsername.font = AppFont.font(type: .SF_Semibold, size: 9.0)
         
         cell.lblComment.text =  commentObj.comment ?? ""
